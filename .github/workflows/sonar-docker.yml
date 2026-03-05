@@ -9,7 +9,7 @@ on:
 env:
   SERVICE_NAME: notification-service
   PORT: 3004
-  DOCKERHUB_NAMESPACE: your-dockerhub-username
+  DOCKERHUB_NAMESPACE: lasirm
 
 jobs:
   build-and-test:
