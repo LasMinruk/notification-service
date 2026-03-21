@@ -3,14 +3,8 @@ name: CI/CD Pipeline - Notification Service
 on:
   push:
     branches: [main, master]
-    paths:
-      - 'notification-service/**'
-      - '.github/workflows/**'
   pull_request:
     branches: [main, master]
-    paths:
-      - 'notification-service/**'
-      - '.github/workflows/**'
 
 env:
   SERVICE_NAME: notification-service
@@ -19,13 +13,12 @@ env:
   IMAGE_NAME: ${{ github.repository }}/notification-service
 
 jobs:
-  # ─────────────────────────────────────────────────────────
-  # CI: Build and Test
-  # ─────────────────────────────────────────────────────────
   ci:
     name: Build & Test
     runs-on: ubuntu-latest
-    
+    env:
+      MONGO_URI: ${{ secrets.MONGO_URI }}
+
     steps:
       - name: Checkout code
         uses: actions/checkout@v4
@@ -47,9 +40,6 @@ jobs:
       - name: Build Docker image
         run: docker build -t ${{ env.SERVICE_NAME }}:${{ github.sha }} .
 
-  # ─────────────────────────────────────────────────────────
-  # Security: SonarCloud Security Scan
-  # ─────────────────────────────────────────────────────────
   security-scan:
     name: SonarCloud Security Scan
     runs-on: ubuntu-latest
@@ -67,9 +57,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
           SONAR_TOKEN: ${{ secrets.SONAR_TOKEN }}
 
-  # ─────────────────────────────────────────────────────────
-  # CD: Build and Push Docker Image
-  # ─────────────────────────────────────────────────────────
   cd:
     name: Build & Push Docker Image
     runs-on: ubuntu-latest
@@ -114,9 +101,6 @@ jobs:
           cache-from: type=gha
           cache-to: type=gha,mode=max
 
-  # ─────────────────────────────────────────────────────────
-  # Deploy to Kubernetes (Optional)
-  # ─────────────────────────────────────────────────────────
   deploy:
     name: Deploy to Kubernetes
     runs-on: ubuntu-latest
@@ -131,6 +115,4 @@ jobs:
       - name: Deploy to Kubernetes
         run: |
           echo "Deploying notification-service to Kubernetes..."
-          # Add your Kubernetes deployment commands here
-          # Example: kubectl set image deployment/notification-service notification-service=${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
-
+          # kubectl set image deployment/notification-service notification-service=${{ env.DOCKER_REGISTRY }}/${{ env.IMAGE_NAME }}:${{ github.sha }}
