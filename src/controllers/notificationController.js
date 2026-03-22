@@ -29,7 +29,8 @@ const sendOrderNotification = async (req, res) => {
       message
     });
 
-    console.log(`📧 Notification saved for ${userEmail}: ${message}`);
+    // Only log the safe DB-generated ID, not user-controlled data
+    console.log(`📧 Notification saved. ID: ${notification._id}`);
 
     res.status(201).json({ success: true, message: 'Notification sent successfully', data: notification });
   } catch (error) {
