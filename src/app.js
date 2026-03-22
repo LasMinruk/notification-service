@@ -1,14 +1,13 @@
-// App.js
 const express = require('express');
+const helmet = require('helmet');   // ← ADD THIS
 const app = express();
 
 // Middleware
+app.use(helmet());          // ← ADD THIS — hides version info
 app.use(express.json());
 
-// Import routes - fixed path to point to correct location
+// Import routes
 const notificationRoutes = require('./routes/notificationRoutes');
-
-// Mount routes
 app.use('/notifications', notificationRoutes);
 
 // Health check
@@ -21,7 +20,7 @@ app.get('/health', (req, res) => {
   });
 });
 
-// Handle unknown routes - using regex pattern for catch-all
+// Handle unknown routes
 app.use(/.*/, (req, res) => {
   res.status(404).json({
     success: false,
