@@ -6,7 +6,7 @@ const app = express();
 app.use(express.json());
 
 // Import routes - fixed path to point to correct location
-const notificationRoutes = require('../routes/notificationRoutes');
+const notificationRoutes = require('./routes/notificationRoutes');
 
 // Mount routes
 app.use('/notifications', notificationRoutes);

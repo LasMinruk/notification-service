@@ -3,7 +3,7 @@ const router = express.Router();
 const {
   getAllNotifications,
   sendOrderNotification
-} = require('../../controllers/notificationController');
+} = require('../controllers/notificationController');
 
 router.get('/', getAllNotifications);           // GET /notifications
 router.post('/order', sendOrderNotification);  // POST /notifications/order
