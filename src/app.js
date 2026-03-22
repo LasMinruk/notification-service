@@ -1,9 +1,9 @@
 const express = require('express');
-const helmet = require('helmet');   // ← ADD THIS
+const helmet = require('helmet');  
 const app = express();
 
 // Middleware
-app.use(helmet());          // ← ADD THIS — hides version info
+app.use(helmet());        
 app.use(express.json());
 
 // Import routes
